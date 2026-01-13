@@ -1,17 +1,48 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import styles from "./NavBar.module.css";
 
 export function NavBar() {
     return (
-        <nav style={{
-            display: "flex",
-            gap: "20px",
-            padding: "10px",
-            background: "#f0f0f0",
-            borderBottom: "1px solid #ccc"
-        }}>
-            <Link to="/">Applicants</Link>
-            <Link to="/statistics">Statistics</Link>
-            <Link to="/submit">Submit Documents</Link>
-        </nav>
+        <div className={styles.navbarWrapper}>
+            <nav className={styles.navbar}>
+                <div className={styles.clouds}></div>
+
+                <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.link} ${styles.active}` : styles.link
+                    }
+                >
+                    Applicants
+                </NavLink>
+
+                <NavLink
+                    to="/statistics"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.link} ${styles.active}` : styles.link
+                    }
+                >
+                    Statistics
+                </NavLink>
+
+                <NavLink
+                    to="/submit"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.link} ${styles.active}` : styles.link
+                    }
+                >
+                    Submit Documents
+                </NavLink>
+
+                <NavLink
+                    to="/programs"
+                    className={({ isActive }) =>
+                        isActive ? `${styles.link} ${styles.active}` : styles.link
+                    }
+                >
+                    Search Programs
+                </NavLink>
+            </nav>
+        </div>
     );
 }

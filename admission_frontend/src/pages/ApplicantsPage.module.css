@@ -1,0 +1,60 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding-top: 20px;
+
+    position: relative;
+    animation: fadeIn 0.4s ease;
+}
+
+/* Мягкие фоновые фигуры */
+.page::before,
+.page::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.18;
+    z-index: -1;
+}
+
+.page::before {
+    top: -80px;
+    left: -160px;
+    background: #6366f1;
+}
+
+.page::after {
+    bottom: -120px;
+    right: -140px;
+    background: #06b6d4;
+}
+
+.title {
+    font-family: "Manrope", sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: slideUp 0.5s ease;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

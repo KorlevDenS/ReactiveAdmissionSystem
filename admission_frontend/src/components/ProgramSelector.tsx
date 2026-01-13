@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { allPrograms$ } from "../api/programsApi";
 import type { EducationalProgram } from "../types/EducationalProgram";
+import styles from "./ProgramSelector.module.css";
 
-export function ProgramSelector({
-                                    onSelect
-                                }: {
-    onSelect: (programId: number) => void;
-}) {
+export function ProgramSelector({ onSelect }: { onSelect: (programId: number | null) => void }) {
     const [programs, setPrograms] = useState<EducationalProgram[]>([]);
 
     useEffect(() => {
@@ -18,11 +15,18 @@ export function ProgramSelector({
     }, []);
 
     return (
-        <div>
-            <label htmlFor="program-select">Select a program:</label>
+        <div className={styles.selectorContainer}>
+            <label htmlFor="program-select" className={styles.label}>
+                Select a program:
+            </label>
+
             <select
                 id="program-select"
-                onChange={e => onSelect(Number(e.target.value))}
+                className={styles.select}
+                onChange={e => {
+                    const value = e.target.value;
+                    onSelect(value === "" ? null : Number(value));
+                }}
             >
                 <option value="">-- Choose --</option>
                 {programs.map(p => (

@@ -3,6 +3,7 @@ import { applicantsByProgram$ } from "../api/applicantsApi";
 import { programById$ } from "../api/programsApi";
 import type { Applicant } from "../types/Applicant";
 import type { EducationalProgram } from "../types/EducationalProgram";
+import styles from "./ApplicantList.module.css";
 
 export function ApplicantList({ programId }: { programId: number }) {
     const [applicants, setApplicants] = useState<Applicant[]>([]);
@@ -26,19 +27,45 @@ export function ApplicantList({ programId }: { programId: number }) {
     }, [programId]);
 
     return (
-        <div>
-            <h2>
+        <div className={styles.container}>
+            <h2 className={styles.title}>
                 Applicants for program:{" "}
                 {program ? `${program.title} (${program.educationLevel})` : `#${programId}`}
             </h2>
-            <ul>
-                {applicants.map(a => (
-                    <li key={a.id}>
-                        {a.firstName} {a.lastName} — {a.pointsNumber} points
-                    </li>
-                ))}
+
+            <ul className={styles.list}>
+                {(() => {
+                    // Сортируем по баллам (от большего к меньшему)
+                    const sorted = [...applicants].sort(
+                        (a, b) => (b.pointsNumber ?? 0) - (a.pointsNumber ?? 0)
+                    );
+
+                    return sorted.map((a, index) => {
+                        const points = a.pointsNumber ?? 0;
+                        const min = program?.minimumPassingScore ?? null;
+                        const budget = program?.budgetPlacesNumber ?? null;
+
+                        const passesMin = min !== null && points >= min;
+                        const inBudgetTop = budget !== null && index < budget;
+
+                        let statusClass = styles.fail; // по умолчанию — оранжевый (не проходит)
+
+                        if (passesMin) statusClass = styles.pass; // проходит минимум
+                        if (passesMin && inBudgetTop) statusClass = styles.budget; // в топе бюджета
+
+                        return (
+                            <li key={a.id} className={`${styles.item} ${statusClass}`}>
+                                <span className={styles.name}>
+                                    {a.firstName} {a.lastName}
+                                </span>
+                                <span className={styles.points}>
+                                    {points} pts
+                                </span>
+                            </li>
+                        );
+                    });
+                })()}
             </ul>
         </div>
     );
 }
-

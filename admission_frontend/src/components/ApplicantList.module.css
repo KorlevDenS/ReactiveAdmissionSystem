@@ -1,0 +1,161 @@
+.container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    position: relative;
+
+    animation: fadeIn 0.45s ease;
+}
+
+/* Фоновые фигуры */
+.container::before,
+.container::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.16;
+    z-index: -1;
+}
+
+.container::before {
+    top: -80px;
+    left: -160px;
+    background: #6366f1;
+}
+
+.container::after {
+    bottom: -120px;
+    right: -140px;
+    background: #06b6d4;
+}
+
+/* Заголовок */
+.title {
+    font-family: "Manrope", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    margin-bottom: 8px;
+    animation: slideDown 0.5s ease;
+}
+
+/* Список */
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Карточка абитуриента */
+.item {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: 16px;
+
+    padding: 18px 22px;
+
+    font-family: "Inter", sans-serif;
+    font-size: 17px;
+    color: #0f172a;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06),
+    inset 0 0 1px rgba(0, 0, 0, 0.04);
+
+    transition:
+            transform 0.25s ease,
+            box-shadow 0.3s ease,
+            border-color 0.3s ease,
+            background 0.3s ease;
+}
+
+/* Hover эффект */
+.item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(99, 102, 241, 0.22);
+    border-color: rgba(99, 102, 241, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Имя */
+.name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Баллы */
+.points {
+    font-size: 20px;
+    font-weight: 700;
+    color: #6366f1;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.item:hover .points {
+    text-shadow: 0 0 6px rgba(99, 102, 241, 0.25);
+}
+
+/* --- BUDGET / PASS / FAIL STATES --- */
+
+/* 🟩 Входит в топ budgetPlacesNumber */
+.budget {
+    border-color: rgba(34, 197, 94, 0.55);          /* зелёная рамка */
+    background: rgba(34, 197, 94, 0.15);            /* мягкий зелёный фон */
+}
+
+.budget .points {
+    color: #22c55e;                                 /* яркий зелёный акцент */
+    font-weight: 700;
+}
+
+/* 🔵 Проходит минимальный порог, но не в топе */
+.pass {
+    border-color: rgba(59, 130, 246, 0.45);         /* синий */
+    background: rgba(59, 130, 246, 0.12);           /* мягкий синий фон */
+}
+
+.pass .points {
+    color: #3b82f6;                                 /* яркий синий акцент */
+    font-weight: 700;
+}
+
+/* 🟧 Не проходит минимальный порог */
+.fail {
+    border-color: rgba(249, 115, 22, 0.45);         /* оранжевая рамка */
+    background: rgba(249, 115, 22, 0.12);           /* мягкий оранжевый фон */
+}
+
+.fail .points {
+    color: #f97316;                                 /* яркий оранжевый акцент */
+    font-weight: 700;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

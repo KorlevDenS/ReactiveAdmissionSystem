@@ -1,0 +1,116 @@
+.card {
+    max-width: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 20px;
+    padding: 28px 30px;
+    box-shadow:
+            0 10px 30px rgba(15, 23, 42, 0.08),
+            inset 0 0 0 0.5px rgba(255, 255, 255, 0.8);
+    transition:
+            transform 0.25s ease,
+            box-shadow 0.3s ease,
+            border-color 0.3s ease,
+            background 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+            0 16px 40px rgba(15, 23, 42, 0.12),
+            inset 0 0 0 0.5px rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(99, 102, 241, 0.35);
+}
+
+.title {
+    font-family: "Manrope", sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+}
+
+.description {
+    font-family: "Inter", sans-serif;
+    font-size: 17px;
+    color: #475569;
+    line-height: 1.6;
+    margin-top: -6px;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(148, 163, 184, 0.3);
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #334155;
+}
+
+.detailRow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 32px;
+    position: relative;
+}
+
+/* Пустые классы */
+.iconEducation {}
+.iconBudget {}
+.iconContract {}
+.iconCost {}
+.iconScore {}
+
+/* Базовый псевдоэлемент */
+.detailRow::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 22px;
+    height: 22px;
+    opacity: 0.8;
+    background-size: 22px;
+    background-repeat: no-repeat;
+}
+
+/* 🎓 Education level */
+.detailRow.iconEducation::before {
+    background-image: url("../assets/icons/education.svg");
+}
+
+/* 🏛 Budget places */
+.detailRow.iconBudget::before {
+    background-image: url("../assets/icons/budget.svg");
+}
+
+/* 💼 Contract places */
+.detailRow.iconContract::before {
+    background-image: url("../assets/icons/contract.svg");
+}
+
+/* 💰 Contract cost */
+.detailRow.iconCost::before {
+    background-image: url("../assets/icons/cost.svg");
+}
+
+/* ⭐ Minimum score */
+.detailRow.iconScore::before {
+    background-image: url("../assets/icons/score.svg");
+}
+
+.detailRow strong {
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 15px;
+}
