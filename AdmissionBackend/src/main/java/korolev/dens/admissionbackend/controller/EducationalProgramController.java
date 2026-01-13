@@ -2,10 +2,8 @@ package korolev.dens.admissionbackend.controller;
 
 import korolev.dens.admissionbackend.model.EducationalProgram;
 import korolev.dens.admissionbackend.service.EducationalProgramService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,5 +31,12 @@ public class EducationalProgramController {
     public Flux<EducationalProgram> getProgramsByApplicant(@PathVariable Long applicantId) {
         return educationalProgramService.getProgramsByApplicant(applicantId);
     }
+
+    @GetMapping(value = "/search", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<EducationalProgram> searchPrograms(@RequestParam(required = false, defaultValue = "") String q) {
+        return educationalProgramService.searchByTitle(q);
+    }
+
+
 }
 

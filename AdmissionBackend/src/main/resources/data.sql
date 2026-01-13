@@ -46,11 +46,12 @@ SELECT setval('applicants_id_seq', (SELECT MAX(id) FROM applicants));
 -- MANY-TO-MANY LINKS
 -- applicant_programs
 -- ============================
-INSERT INTO applicant_programs (applicant_id, program_id)
+INSERT INTO applicant_programs (id, applicant_id, program_id)
 VALUES
-    (1, 1),
-    (1, 2),
-    (2, 1),
-    (3, 2),
-    (3, 3)
+    (1,1, 1),
+    (2,1, 2),
+    (3,2, 1),
+    (4,3, 2),
+    (5,3, 3)
 ON CONFLICT DO NOTHING;
+SELECT setval('applicant_programs_id_seq', (SELECT MAX(id) FROM applicant_programs));

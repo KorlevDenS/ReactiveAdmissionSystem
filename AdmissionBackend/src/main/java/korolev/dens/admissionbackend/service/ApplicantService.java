@@ -5,6 +5,7 @@ import korolev.dens.admissionbackend.dto.SubmissionProgress;
 import korolev.dens.admissionbackend.dto.SubmissionStage;
 import korolev.dens.admissionbackend.model.Applicant;
 import korolev.dens.admissionbackend.model.ApplicantProgram;
+import korolev.dens.admissionbackend.model.EntranceTest;
 import korolev.dens.admissionbackend.repository.ApplicantProgramRepository;
 import korolev.dens.admissionbackend.repository.ApplicantRepository;
 import korolev.dens.admissionbackend.repository.EducationalProgramRepository;
@@ -12,19 +13,26 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.SplittableRandom;
+
 @Service
 public class ApplicantService {
 
     private final ApplicantProgramRepository applicantProgramRepository;
     private final ApplicantRepository applicantRepository;
     private final EducationalProgramRepository educationalProgramRepository;
+    private final StatsUpdater statsUpdater;
+
+    private final SplittableRandom rnd;
 
     public ApplicantService(ApplicantProgramRepository applicantProgramRepository,
                             ApplicantRepository applicantRepository,
-                            EducationalProgramRepository educationalProgramRepository) {
+                            EducationalProgramRepository educationalProgramRepository, StatsUpdater statsUpdater) {
         this.applicantProgramRepository = applicantProgramRepository;
         this.applicantRepository = applicantRepository;
         this.educationalProgramRepository = educationalProgramRepository;
+        this.statsUpdater = statsUpdater;
+        this.rnd = new SplittableRandom();
     }
 
     public Flux<Applicant> getApplicantsByProgram(Long programId) {
@@ -48,7 +56,7 @@ public class ApplicantService {
         ApplicantProgram ap = new ApplicantProgram();
         ap.setApplicantId(applicantId);
         ap.setProgramId(programId);
-        return applicantProgramRepository.save(ap);
+        return applicantProgramRepository.save(ap).doOnSuccess(_ -> statsUpdater.updateStats());
     }
 
 
@@ -97,7 +105,7 @@ public class ApplicantService {
                         // 5. DONE
                         Flux.just(new SubmissionProgress(SubmissionStage.DONE, "Application successfully submitted"))
                 )
-                .onErrorResume(StopProcessingException.class, ex ->
+                .onErrorResume(StopProcessingException.class, _ ->
                         Flux.just(new SubmissionProgress(SubmissionStage.DONE,
                                 "Applicant already existed; linked to program"))
                 )
@@ -127,7 +135,7 @@ public class ApplicantService {
         }
         if (r.previousEducationAverageScore() == null ||
                 r.previousEducationAverageScore() < 0 ||
-                r.previousEducationAverageScore() > 150) {
+                r.previousEducationAverageScore() > 5) {
             return Mono.error(new IllegalArgumentException("Invalid average score"));
         }
         if (r.entranceTest() == null) {
@@ -155,6 +163,19 @@ public class ApplicantService {
                 );
     }
 
+    private int simulatePoints(Applicant applicant) {
+        EntranceTest entranceTest = applicant.getEntranceTest();
+
+        if (entranceTest == EntranceTest.OLYMPIAD
+                || entranceTest == EntranceTest.SOCIAL_BENEFIT
+                || entranceTest == EntranceTest.RECOMMENDATION_LETTER) {
+            return 80 + rnd.nextInt(31); // 0..30 -> 80..110
+        } else {
+            return rnd.nextInt(111); // 0..110
+        }
+    }
+
+
     private Mono<Applicant> createApplicant(ApplicantSubmissionRequest req) {
         Applicant applicant = new Applicant();
         applicant.setId(null);
@@ -166,9 +187,9 @@ public class ApplicantService {
         applicant.setAddress(req.address());
         applicant.setPreviousEducationAverageScore(req.previousEducationAverageScore());
         applicant.setEntranceTest(req.entranceTest());
-        applicant.setPointsNumber(0);
+        applicant.setPointsNumber(simulatePoints(applicant));
 
-        return applicantRepository.save(applicant);
+        return applicantRepository.save(applicant).doOnSuccess(_ -> statsUpdater.updateStats());
     }
 
 

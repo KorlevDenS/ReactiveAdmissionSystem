@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS applicants (
                                           entrance_test VARCHAR(50) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS applicant_programs (
+                                                  id BIGSERIAL PRIMARY KEY,
                                                   applicant_id BIGINT NOT NULL REFERENCES applicants(id) ON DELETE CASCADE,
                                                   program_id BIGINT NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
-                                                  PRIMARY KEY (applicant_id, program_id)
+                                                  UNIQUE (applicant_id, program_id)
 );

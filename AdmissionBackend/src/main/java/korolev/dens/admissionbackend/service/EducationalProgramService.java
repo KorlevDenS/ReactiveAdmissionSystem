@@ -31,5 +31,12 @@ public class EducationalProgramService {
                 .flatMap(link -> educationalProgramRepository.findById(link.getProgramId()));
     }
 
+    public Flux<EducationalProgram> searchByTitle(String q) {
+        if (q == null || q.isBlank()) {
+            return educationalProgramRepository.findAll();
+        }
+        return educationalProgramRepository.searchByTitle(q.trim());
+    }
+
 
 }
