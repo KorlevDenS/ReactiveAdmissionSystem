@@ -15,10 +15,4 @@ public enum EducationLevel {
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "EducationLevel{" +
-                "title='" + title + '\'' +
-                '}';
-    }
 }

@@ -1,5 +1,6 @@
 package korolev.dens.admissionbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -13,6 +14,8 @@ public class EducationalProgram {
 
     private String title;
     private String description;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private EducationLevel educationLevel;
     private Integer budgetPlacesNumber;
     private Integer contractPlacesNumber;

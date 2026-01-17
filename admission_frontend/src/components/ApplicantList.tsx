@@ -29,7 +29,6 @@ export function ApplicantList({ programId }: { programId: number }) {
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>
-                Applicants for program:{" "}
                 {program ? `${program.title} (${program.educationLevel})` : `#${programId}`}
             </h2>
 
@@ -59,7 +58,13 @@ export function ApplicantList({ programId }: { programId: number }) {
                                     {a.firstName} {a.lastName}
                                 </span>
                                 <span className={styles.points}>
-                                    {points} pts
+                                    {a.previousEducationAverageScore}
+                                </span>
+                                <span className={styles.points}>
+                                    {a.entranceTest.toLowerCase()}
+                                </span>
+                                <span className={styles.points}>
+                                    {points} points
                                 </span>
                             </li>
                         );

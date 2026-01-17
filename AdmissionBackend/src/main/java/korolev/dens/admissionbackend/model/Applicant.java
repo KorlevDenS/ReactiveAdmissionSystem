@@ -1,5 +1,6 @@
 package korolev.dens.admissionbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -18,6 +19,8 @@ public class Applicant {
     private String address;
     private Integer pointsNumber;
     private Double previousEducationAverageScore;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private EntranceTest entranceTest;
 
 }
